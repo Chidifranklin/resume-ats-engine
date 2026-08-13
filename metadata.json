@@ -1,0 +1,6 @@
+{
+  "name": "ATS CV Optimizer",
+  "description": "AI-powered ATS resume & CV optimizer, parser, match scorer, and document generator.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,87 @@
+{
+  "entities": {
+    "users": {
+      "title": "User Profiles",
+      "description": "Registered candidate user profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "lastActiveAt": { "type": "string" },
+        "cvsUploadedCount": { "type": "number" },
+        "optimizationsCount": { "type": "number" }
+      },
+      "required": ["uid", "email"]
+    },
+    "users/savedRecords": {
+      "title": "Saved CV Optimizations",
+      "description": "Saved job-tailored resume optimizations and ATS analysis results",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "originalScore": { "type": "number" },
+        "optimizedScore": { "type": "number" },
+        "jobTitle": { "type": "string" },
+        "company": { "type": "string" },
+        "originalCV": { "type": "object" },
+        "optimizedCV": { "type": "object" },
+        "analysis": { "type": "object" },
+        "selectedTemplate": { "type": "string" }
+      },
+      "required": ["id", "userId", "title", "jobTitle"]
+    },
+    "users/uploadedCVs": {
+      "title": "Uploaded Base Resumes",
+      "description": "Stored original uploaded or pasted candidate CV documents",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "fileName": { "type": "string" },
+        "uploadedAt": { "type": "string" },
+        "structuredCV": { "type": "object" },
+        "rawText": { "type": "string" }
+      },
+      "required": ["id", "userId", "fileName", "uploadedAt"]
+    },
+    "users/activities": {
+      "title": "User Activity Logs",
+      "description": "Candidate history log of actions like CV uploads, optimizations, and exports",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "action": { "type": "string" },
+        "details": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "userId", "action", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "users",
+      "description": "User profile metadata document"
+    },
+    "/users/{userId}/savedRecords/{recordId}": {
+      "schema": "users/savedRecords",
+      "description": "User saved job-tailored resume optimizations"
+    },
+    "/users/{userId}/uploadedCVs/{cvId}": {
+      "schema": "users/uploadedCVs",
+      "description": "User uploaded base resumes"
+    },
+    "/users/{userId}/activities/{activityId}": {
+      "schema": "users/activities",
+      "description": "User activity audit history"
+    }
+  }
+}
