@@ -111,6 +111,8 @@ function AppContent() {
   const [atsAnalysis, setAtsAnalysis] = useState<ATSAnalysisResult | null>(null);
   const [optimizedCV, setOptimizedCV] = useState<StructuredCV | null>(null);
   const [optimizationLevel, setOptimizationLevel] = useState<OptimizationLevel>('Balanced');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isOptimizing, setIsOptimizing] = useState(false);
 
   // Modal for skill confirmation
   const [showSkillModal, setShowSkillModal] = useState(false);
@@ -263,6 +265,7 @@ function AppContent() {
   const handleRunAnalysis = async () => {
     if (!parsedCV || !parsedJob) return;
 
+    setIsAnalyzing(true);
     let analysisRes: ATSAnalysisResult = DEMO_ATS_ANALYSIS;
     try {
       const res = await fetch('/api/analyze-ats', {
@@ -277,6 +280,8 @@ function AppContent() {
       }
     } catch (err) {
       analysisRes = DEMO_ATS_ANALYSIS;
+    } finally {
+      setIsAnalyzing(false);
     }
 
     setAtsAnalysis(analysisRes);
@@ -306,6 +311,7 @@ function AppContent() {
     setOptimizationLevel(level);
     if (!parsedCV || !parsedJob) return;
 
+    setIsOptimizing(true);
     try {
       const res = await fetch('/api/optimize-cv', {
         method: 'POST',
@@ -346,6 +352,8 @@ function AppContent() {
       setOptimizedCV(fallbackOpt);
       setOptimizeStep('editor');
       saveToHistory(fallbackOpt, 86);
+    } finally {
+      setIsOptimizing(false);
     }
   };
 
@@ -841,6 +849,7 @@ function AppContent() {
                   }}
                   onNextStep={handleRunAnalysis}
                   onBackStep={() => setOptimizeStep('upload')}
+                  isAnalyzing={isAnalyzing}
                 />
               )}
 
@@ -850,6 +859,7 @@ function AppContent() {
                   analysis={atsAnalysis}
                   onStartOptimization={handleStartOptimization}
                   onBackToJob={() => setOptimizeStep('job')}
+                  isOptimizing={isOptimizing}
                 />
               )}
 

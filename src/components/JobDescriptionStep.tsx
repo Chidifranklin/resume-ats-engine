@@ -7,6 +7,7 @@ interface JobDescriptionStepProps {
   onJobParsed: (job: StructuredJob) => void;
   onNextStep: () => void;
   onBackStep: () => void;
+  isAnalyzing?: boolean;
 }
 
 export const JobDescriptionStep: React.FC<JobDescriptionStepProps> = ({
@@ -14,6 +15,7 @@ export const JobDescriptionStep: React.FC<JobDescriptionStepProps> = ({
   onJobParsed,
   onNextStep,
   onBackStep,
+  isAnalyzing = false,
 }) => {
   const [jobTitle, setJobTitle] = useState(parsedJob?.jobTitle || '');
   const [company, setCompany] = useState(parsedJob?.company || '');
@@ -242,10 +244,20 @@ export const JobDescriptionStep: React.FC<JobDescriptionStepProps> = ({
 
             <button
               onClick={onNextStep}
-              className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition-all flex items-center gap-2 cursor-pointer active:scale-95"
+              disabled={isAnalyzing}
+              className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition-all flex items-center gap-2 cursor-pointer active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              <span>Run ATS Compatibility Analysis</span>
-              <ArrowRight className="w-4 h-4" />
+              {isAnalyzing ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  <span>Running ATS Compatibility Analysis...</span>
+                </>
+              ) : (
+                <>
+                  <span>Run ATS Compatibility Analysis</span>
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
             </button>
           </div>
 

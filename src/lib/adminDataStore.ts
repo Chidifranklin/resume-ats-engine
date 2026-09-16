@@ -48,7 +48,7 @@ class AdminDataStore {
     outputTokens: 0,
     totalTokens: 0,
     avgLatencyMs: 0,
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3.8-flash',
     estimatedCost: 0,
     costPerOptimization: 0,
     costAlertThresholdDaily: 50.0,

@@ -6,6 +6,7 @@ import {
   BarChart3,
   Search,
   Info,
+  RefreshCw,
 } from 'lucide-react';
 import { ATSAnalysisResult, KeywordStatus, OptimizationLevel } from '../types';
 
@@ -13,12 +14,14 @@ interface ATSAnalysisViewProps {
   analysis: ATSAnalysisResult;
   onStartOptimization: (level: OptimizationLevel) => void;
   onBackToJob: () => void;
+  isOptimizing?: boolean;
 }
 
 export const ATSAnalysisView: React.FC<ATSAnalysisViewProps> = ({
   analysis,
   onStartOptimization,
   onBackToJob,
+  isOptimizing = false,
 }) => {
   const [keywordFilter, setKeywordFilter] = useState<'ALL' | KeywordStatus>('ALL');
   const [selectedLevel, setSelectedLevel] = useState<OptimizationLevel>('Balanced');
@@ -293,10 +296,20 @@ export const ATSAnalysisView: React.FC<ATSAnalysisViewProps> = ({
 
           <button
             onClick={() => onStartOptimization(selectedLevel)}
-            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+            disabled={isOptimizing}
+            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            <Sparkles className="w-4 h-4 fill-current" />
-            <span>Optimize CV Now ({selectedLevel})</span>
+            {isOptimizing ? (
+              <>
+                <RefreshCw className="w-4 h-4 animate-spin" />
+                <span>Optimizing CV ({selectedLevel})...</span>
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-4 h-4 fill-current" />
+                <span>Optimize CV Now ({selectedLevel})</span>
+              </>
+            )}
           </button>
         </div>
 
